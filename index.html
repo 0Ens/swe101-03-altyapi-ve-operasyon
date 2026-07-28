@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Error Budget Hesaplayıcısı</title>
+<style>
+  body { font-family: system-ui, sans-serif; max-width: 480px; margin: 40px auto; padding: 0 16px; }
+  label { display: block; margin-top: 12px; font-weight: bold; }
+  input { width: 100%; padding: 8px; margin-top: 4px; box-sizing: border-box; }
+  button { margin-top: 16px; padding: 10px 16px; font-size: 1rem; }
+  #result { margin-top: 20px; padding: 12px; border-radius: 6px; }
+  #result.ok { background: #e6f4ea; color: #1e4620; }
+  #result.error { background: #fdecea; color: #611a15; }
+</style>
+</head>
+<body>
+<h1>Error Budget Hesaplayıcısı</h1>
+<p>SLO yüzdesini ve zaman penceresini gir, izin verilen toplam kesinti süresini hesapla.</p>
+
+<form id="calc-form">
+  <label for="slo">SLO yüzdesi (%)</label>
+  <input type="number" id="slo" step="any" placeholder="ör. 99.9" required>
+
+  <label for="days">Zaman penceresi (gün)</label>
+  <input type="number" id="days" step="any" placeholder="ör. 30" required>
+
+  <button type="submit">Hesapla</button>
+</form>
+
+<div id="result"></div>
+
+<script type="module">
+  import { calculateAllowedDowntime, formatDuration } from './errorBudget.js';
+
+  const form = document.getElementById('calc-form');
+  const result = document.getElementById('result');
+
+  form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    const slo = Number(document.getElementById('slo').value);
+    const days = Number(document.getElementById('days').value);
+
+    try {
+      const downtimeSeconds = calculateAllowedDowntime(slo, days);
+      const readable = formatDuration(downtimeSeconds);
+      result.textContent = `%${slo} SLO ile ${days} günde en fazla ${readable} kesinti izinlidir.`;
+      result.className = 'ok';
+    } catch (err) {
+      result.textContent = `Hata: ${err.message}`;
+      result.className = 'error';
+    }
+  });
+</script>
+</body>
+</html>
