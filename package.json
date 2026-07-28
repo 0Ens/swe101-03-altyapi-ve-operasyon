@@ -1,0 +1,9 @@
+{
+  "name": "swe101-03-altyapi-ve-operasyon",
+  "version": "1.0.0",
+  "description": "Error budget hesaplayıcısı",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}
