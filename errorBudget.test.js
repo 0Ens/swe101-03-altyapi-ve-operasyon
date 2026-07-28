@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { calculateAllowedDowntime, formatDuration } from './errorBudget.js';
 
 test('%99,9 SLO / 30 gün -> 2592 saniye', () => {
-  assert.equal(calculateAllowedDowntime(99.9, 30), 9999); // bilerek kırıldı: pipeline'ı kanıtlamak için
+  assert.equal(calculateAllowedDowntime(99.9, 30), 2592);
 });
 
 test('%100 SLO (sınır değer) -> 0 saniye kesinti', () => {
